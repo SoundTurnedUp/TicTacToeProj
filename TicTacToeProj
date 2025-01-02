@@ -1,3 +1,8 @@
+// two person multiplayer?
+// difficulty levels?
+// save and load game?
+// GUI?
+
 class Program
 {
     static void Main()
@@ -25,13 +30,13 @@ class Menu
 {
     public void ShowMenu()
     {
-        Console.Clear();
-        Console.WriteLine("\r\n████████╗██╗░█████╗░░░░░░░████████╗░█████╗░░█████╗░░░░░░░████████╗░█████╗░███████╗\r\n╚══██╔══╝██║██╔══██╗░░░░░░╚══██╔══╝██╔══██╗██╔══██╗░░░░░░╚══██╔══╝██╔══██╗██╔════╝\r\n░░░██║░░░██║██║░░╚═╝█████╗░░░██║░░░███████║██║░░╚═╝█████╗░░░██║░░░██║░░██║█████╗░░\r\n░░░██║░░░██║██║░░██╗╚════╝░░░██║░░░██╔══██║██║░░██╗╚════╝░░░██║░░░██║░░██║██╔══╝░░\r\n░░░██║░░░██║╚█████╔╝░░░░░░░░░██║░░░██║░░██║╚█████╔╝░░░░░░░░░██║░░░╚█████╔╝███████╗\r\n░░░╚═╝░░░╚═╝░╚════╝░░░░░░░░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░░░░░░░░░░╚═╝░░░░╚════╝░╚══════╝");
-        Console.WriteLine("Unbeatable tic-tac-toe 'AI'\n");
-
         string choice = "";
         do
         {
+            Console.Clear();
+            Console.WriteLine("\r████████╗██╗░█████╗░░░░░░░████████╗░█████╗░░█████╗░░░░░░░████████╗░█████╗░███████╗\r\n╚══██╔══╝██║██╔══██╗░░░░░░╚══██╔══╝██╔══██╗██╔══██╗░░░░░░╚══██╔══╝██╔══██╗██╔════╝\r\n░░░██║░░░██║██║░░╚═╝█████╗░░░██║░░░███████║██║░░╚═╝█████╗░░░██║░░░██║░░██║█████╗░░\r\n░░░██║░░░██║██║░░██╗╚════╝░░░██║░░░██╔══██║██║░░██╗╚════╝░░░██║░░░██║░░██║██╔══╝░░\r\n░░░██║░░░██║╚█████╔╝░░░░░░░░░██║░░░██║░░██║╚█████╔╝░░░░░░░░░██║░░░╚█████╔╝███████╗\r\n░░░╚═╝░░░╚═╝░╚════╝░░░░░░░░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░░░░░░░░░░╚═╝░░░░╚════╝░╚══════╝");
+            Console.WriteLine("Unbeatable tic-tac-toe 'AI'\n");
+
             Console.WriteLine("1. Play X");
             Console.WriteLine("2. Play O");
             Console.WriteLine("Q. Quit");
@@ -50,7 +55,78 @@ class Menu
                 case "quit":
                     DisplayHelper.ShowMessage("Quitting...");
                     break;
+                default:
+                    DisplayHelper.ShowMessage("Invalid input, try again");
+                    break;
             }
         } while (choice.ToLower() != "q" && choice.ToLower() != "quit");
     }
+}
+
+class Game
+{
+    private char[,] board;
+    private char currentPlayer;
+    private int turnCount;
+
+    public Game()
+    {
+        board = new char[3, 3];
+        currentPlayer = 'X';
+        turnCount = 0;
+    }
+
+    private void CreateBoard()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                board[i, j] = '.';
+            }
+        }
+    }
+    public void DisplayBoard()
+    {
+        Console.Clear();
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Console.Write(board[i, j]);
+                if (j < 2) Console.Write("|");
+            }
+            Console.WriteLine();
+            if (i < 2) Console.WriteLine("----");
+        }
+        Console.WriteLine();
+    }
+    public void SwitchPlayer()
+    {
+
+    }
+    public bool MakeMove()
+    {
+
+    }
+    public char CheckWinner()
+    {
+
+    }
+    public bool IsDraw()
+    {
+
+    }
+    public bool IsOnGoing()
+    {
+
+    }
+    public void ResetGame()
+    {
+
+    }
+}
+class AI
+{
+
 }
