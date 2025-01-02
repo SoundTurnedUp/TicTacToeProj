@@ -1,0 +1,56 @@
+class Program
+{
+    static void Main()
+    {
+        Menu menu = new Menu();
+        menu.ShowMenu();
+    }
+}
+class DisplayHelper
+{
+    public static void ShowMessage(string message, int delayMilliseconds = 1500)
+    {
+        Console.Clear();
+        Console.WriteLine(message);
+        Thread.Sleep(delayMilliseconds);
+        Console.Clear();
+    }
+    public static void Pause()
+    {
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+}
+class Menu
+{
+    public void ShowMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("\r\n████████╗██╗░█████╗░░░░░░░████████╗░█████╗░░█████╗░░░░░░░████████╗░█████╗░███████╗\r\n╚══██╔══╝██║██╔══██╗░░░░░░╚══██╔══╝██╔══██╗██╔══██╗░░░░░░╚══██╔══╝██╔══██╗██╔════╝\r\n░░░██║░░░██║██║░░╚═╝█████╗░░░██║░░░███████║██║░░╚═╝█████╗░░░██║░░░██║░░██║█████╗░░\r\n░░░██║░░░██║██║░░██╗╚════╝░░░██║░░░██╔══██║██║░░██╗╚════╝░░░██║░░░██║░░██║██╔══╝░░\r\n░░░██║░░░██║╚█████╔╝░░░░░░░░░██║░░░██║░░██║╚█████╔╝░░░░░░░░░██║░░░╚█████╔╝███████╗\r\n░░░╚═╝░░░╚═╝░╚════╝░░░░░░░░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░░░░░░░░░░╚═╝░░░░╚════╝░╚══════╝");
+        Console.WriteLine("Unbeatable tic-tac-toe 'AI'\n");
+
+        string choice = "";
+        do
+        {
+            Console.WriteLine("1. Play X");
+            Console.WriteLine("2. Play O");
+            Console.WriteLine("Q. Quit");
+            choice = Console.ReadLine();
+            switch (choice.ToLower())
+            {
+                case "1":
+                case "play x":
+                case "x":
+                    break;
+                case "2":
+                case "play o":
+                case "o":
+                    break;
+                case "q":
+                case "quit":
+                    DisplayHelper.ShowMessage("Quitting...");
+                    break;
+            }
+        } while (choice.ToLower() != "q" && choice.ToLower() != "quit");
+    }
+}
