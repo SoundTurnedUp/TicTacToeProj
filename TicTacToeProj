@@ -8,7 +8,7 @@ class Program
     static void Main()
     {
         Menu menu = new Menu();
-        menu.ShowMenu();
+        menu.MainMenu();
     }
 }
 class DisplayHelper
@@ -28,7 +28,7 @@ class DisplayHelper
 }
 class Menu
 {
-    public void ShowMenu()
+    public void MainMenu()
     {
         string choice = "";
         do
@@ -37,18 +37,49 @@ class Menu
             Console.WriteLine("\r████████╗██╗░█████╗░░░░░░░████████╗░█████╗░░█████╗░░░░░░░████████╗░█████╗░███████╗\r\n╚══██╔══╝██║██╔══██╗░░░░░░╚══██╔══╝██╔══██╗██╔══██╗░░░░░░╚══██╔══╝██╔══██╗██╔════╝\r\n░░░██║░░░██║██║░░╚═╝█████╗░░░██║░░░███████║██║░░╚═╝█████╗░░░██║░░░██║░░██║█████╗░░\r\n░░░██║░░░██║██║░░██╗╚════╝░░░██║░░░██╔══██║██║░░██╗╚════╝░░░██║░░░██║░░██║██╔══╝░░\r\n░░░██║░░░██║╚█████╔╝░░░░░░░░░██║░░░██║░░██║╚█████╔╝░░░░░░░░░██║░░░╚█████╔╝███████╗\r\n░░░╚═╝░░░╚═╝░╚════╝░░░░░░░░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░░░░░░░░░░╚═╝░░░░╚════╝░╚══════╝");
             Console.WriteLine("Unbeatable tic-tac-toe 'AI'\n");
 
-            Console.WriteLine("1. Play X");
-            Console.WriteLine("2. Play O");
+            Console.WriteLine("1. Play vs AI");
+            Console.WriteLine("2. Play vs Friend");
             Console.WriteLine("Q. Quit");
+            Console.Write("Enter choice: ");
             choice = Console.ReadLine();
             switch (choice.ToLower())
             {
                 case "1":
-                case "play x":
+                case "ai":
+                case "x":
+                    
+                    break;
+                case "2":
+                case "friend":
+                case "o":
+                    break;
+                case "q":
+                case "quit":
+                    DisplayHelper.ShowMessage("Quitting...");
+                    break;
+                default:
+                    DisplayHelper.ShowMessage("Invalid input, try again");
+                    break;
+            }
+        } while (choice.ToLower() != "q" && choice.ToLower() != "quit");
+    }
+
+    public void SecondMenu()
+    {
+        string choice = "";
+        do {
+            Console.Clear();
+            Console.WriteLine("1. Play X");
+            Console.WriteLine("2. Play O");
+            Console.WriteLine("Q. Quit");
+            Console.Write("Enter choice: ");
+            choice = Console.ReadLine();
+            switch (choice.ToLower())
+            {
+                case "1":
                 case "x":
                     break;
                 case "2":
-                case "play o":
                 case "o":
                     break;
                 case "q":
@@ -103,30 +134,39 @@ class Game
     }
     public void SwitchPlayer()
     {
-
+        if (currentPlayer == 'X') currentPlayer = 'O';
+        if (currentPlayer == 'O') currentPlayer = 'X';
     }
-    public bool MakeMove()
+    public bool MakeMove(int row, int col)
     {
-
+        if (row < 0 || row > 2 || col < 0 || col > 2 || board[row, col] != '.') return false;
+        board[row, col] = currentPlayer;
+        turnCount++;
+        return true;
     }
-    public char CheckWinner()
+    public string CheckWinner()
     {
-
+        for (int i = 0; i < 3; i++)
+        {
+            if (board[i, 0] == board[i, 1] && board[i, 1] == board[i, 2] && board[i, 0] != ' ') return $"Winner: {board[i, 0]}";
+            if (board[0, i] == board[1, i] && board[1, i] == board[2, i] && board[0, i] != ' ') return $"Winner: {board[0, i]}";
+        }
+        if (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2] && board[0, 0] != ' ') return $"Winner: {board[0, 0]}";
+        if (board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0] && board[0, 2] != ' ') return $"Winner: {board[0, 2]}";
+        return null;
     }
     public bool IsDraw()
     {
-
+        return turnCount == 9 && CheckWinner() == null;
     }
     public bool IsOnGoing()
     {
-
+        return turnCount < 9 && CheckWinner() == null;
     }
     public void ResetGame()
     {
-
+        CreateBoard();
+        currentPlayer = 'X';
+        turnCount = 0;
     }
-}
-class AI
-{
-
 }
