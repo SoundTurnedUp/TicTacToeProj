@@ -28,9 +28,10 @@ class DisplayHelper
 }
 class Menu
 {
+    string choice = "";
     public void MainMenu()
     {
-        string choice = "";
+        choice = "";
         do
         {
             Console.Clear();
@@ -47,7 +48,6 @@ class Menu
                 case "1":
                 case "ai":
                 case "x":
-                    
                     break;
                 case "2":
                 case "friend":
@@ -66,7 +66,7 @@ class Menu
 
     public void SecondMenu()
     {
-        string choice = "";
+        choice = "";
         do {
             Console.Clear();
             Console.WriteLine("1. Play X");
@@ -78,6 +78,7 @@ class Menu
             {
                 case "1":
                 case "x":
+                    return "X"
                     break;
                 case "2":
                 case "o":
@@ -92,15 +93,23 @@ class Menu
             }
         } while (choice.ToLower() != "q" && choice.ToLower() != "quit");
     }
+    public void PlayAI()
+    {
+        SecondMenu();
+    }
+    public void PlayFriend()
+    {
+        SecondMenu();
+    }
 }
 
-class Game
+class GameFunctions
 {
     private char[,] board;
     private char currentPlayer;
     private int turnCount;
 
-    public Game()
+    public GameFunctions()
     {
         board = new char[3, 3];
         currentPlayer = 'X';
