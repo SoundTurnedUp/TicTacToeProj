@@ -113,6 +113,7 @@ class GameFunctions
 {
     private string[,] board;
     private string currentPlayer;
+    public string CurrentPlayer { get { return currentPlayer; } set { currentPlayer = value; } }
     private int turnCount;
 
     public GameFunctions()
@@ -238,5 +239,27 @@ class GameController
             game.ResetGame();
             AIGame(player);
         }
+    }
+    private void PlayerMove()
+    {
+        bool validMove = false;
+        while (!validMove)
+        {
+            Console.WriteLine($"Player {game.CurrentPlayer}, make your move.");
+            Console.Write("Row (1 - 3): ");
+            int row = int.Parse(Console.ReadLine()) - 1;
+            Console.Write("Col (1 - 3): ");
+            int col = int.Parse(Console.ReadLine()) - 1;
+
+            validMove = game.MakeMove(row, col);
+            if (!validMove) DisplayHelper.ShowMessage("Invalid move. Try again!");
+        }
+    }
+    private void AIMove()
+    {
+        Console.WriteLine("AI is thinking...");
+        Thread.Sleep(1000);
+
+        //implement minimax stuffs here if I end up using AI
     }
 }
