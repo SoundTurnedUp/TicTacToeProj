@@ -29,9 +29,9 @@ class DisplayHelper
 class Menu
 {
     string choice = "";
+    GameController controller = new GameController();
     public void MainMenu()
     {
-        choice = "";
         do
         {
             Console.Clear();
@@ -48,10 +48,12 @@ class Menu
                 case "1":
                 case "ai":
                 case "x":
+                    PlayAI();
                     break;
                 case "2":
                 case "friend":
                 case "o":
+                    PlayFriend();
                     break;
                 case "q":
                 case "quit":
@@ -64,9 +66,8 @@ class Menu
         } while (choice.ToLower() != "q" && choice.ToLower() != "quit");
     }
 
-    public void SecondMenu()
+    public string SecondMenu()
     {
-        choice = "";
         do {
             Console.Clear();
             Console.WriteLine("1. Play X");
@@ -78,11 +79,10 @@ class Menu
             {
                 case "1":
                 case "x":
-                    return "X"
-                    break;
+                    return "X";
                 case "2":
                 case "o":
-                    break;
+                    return "O";
                 case "q":
                 case "quit":
                     DisplayHelper.ShowMessage("Quitting...");
@@ -92,27 +92,33 @@ class Menu
                     break;
             }
         } while (choice.ToLower() != "q" && choice.ToLower() != "quit");
+        return null;
     }
     public void PlayAI()
     {
-        SecondMenu();
+        string playerChoice = SecondMenu();
+        if (playerChoice == null) { return; }
+        else
+        {
+            controller.AIGame(playerChoice);
+        }
     }
     public void PlayFriend()
     {
-        SecondMenu();
+        if (SecondMenu() == null) { return; }
     }
 }
 
 class GameFunctions
 {
-    private char[,] board;
-    private char currentPlayer;
+    private string[,] board;
+    private string currentPlayer;
     private int turnCount;
 
     public GameFunctions()
     {
-        board = new char[3, 3];
-        currentPlayer = 'X';
+        board = new string[3, 3];
+        currentPlayer = "X";
         turnCount = 0;
     }
 
@@ -122,7 +128,7 @@ class GameFunctions
         {
             for (int j = 0; j < 3; j++)
             {
-                board[i, j] = '.';
+                board[i, j] = ".";
             }
         }
     }
@@ -143,12 +149,12 @@ class GameFunctions
     }
     public void SwitchPlayer()
     {
-        if (currentPlayer == 'X') currentPlayer = 'O';
-        if (currentPlayer == 'O') currentPlayer = 'X';
+        if (currentPlayer == "X") currentPlayer = "O";
+        if (currentPlayer == "O") currentPlayer = "X";
     }
     public bool MakeMove(int row, int col)
     {
-        if (row < 0 || row > 2 || col < 0 || col > 2 || board[row, col] != '.') return false;
+        if (row < 0 || row > 2 || col < 0 || col > 2 || board[row, col] != ".") return false;
         board[row, col] = currentPlayer;
         turnCount++;
         return true;
@@ -157,11 +163,11 @@ class GameFunctions
     {
         for (int i = 0; i < 3; i++)
         {
-            if (board[i, 0] == board[i, 1] && board[i, 1] == board[i, 2] && board[i, 0] != ' ') return $"Winner: {board[i, 0]}";
-            if (board[0, i] == board[1, i] && board[1, i] == board[2, i] && board[0, i] != ' ') return $"Winner: {board[0, i]}";
+            if (board[i, 0] == board[i, 1] && board[i, 1] == board[i, 2] && board[i, 0] != " ") return $"Winner: {board[i, 0]}";
+            if (board[0, i] == board[1, i] && board[1, i] == board[2, i] && board[0, i] != " ") return $"Winner: {board[0, i]}";
         }
-        if (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2] && board[0, 0] != ' ') return $"Winner: {board[0, 0]}";
-        if (board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0] && board[0, 2] != ' ') return $"Winner: {board[0, 2]}";
+        if (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2] && board[0, 0] != " ") return $"Winner: {board[0, 0]}";
+        if (board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0] && board[0, 2] != " ") return $"Winner: {board[0, 2]}";
         return null;
     }
     public bool IsDraw()
@@ -175,7 +181,62 @@ class GameFunctions
     public void ResetGame()
     {
         CreateBoard();
-        currentPlayer = 'X';
+        currentPlayer = "X";
         turnCount = 0;
+    }
+}
+
+class GameController
+{
+    private GameFunctions game;
+
+    public GameController()
+    {
+        game = new GameFunctions();
+    }
+    public void AIGame(string player)
+    {
+        bool isPlayerTurn = player.ToUpper() == "X";
+
+        while (game.IsOnGoing())
+        {
+            game.DisplayBoard();
+
+            if (isPlayerTurn)
+            {
+                //PlayerMove subprogram
+            }
+            else
+            {
+                 //AIMove subprogram
+            }
+            string winner = game.CheckWinner();
+            if (winner != null)
+            {
+                game.DisplayBoard();
+                Console.WriteLine($"Player {winner} wins!");
+                DisplayHelper.Pause();
+                break;
+            }
+            else if (game.IsDraw())
+            {
+                game.DisplayBoard();
+                Console.WriteLine("It's a draw!");
+                DisplayHelper.Pause();
+                break;
+            }
+            game.SwitchPlayer();
+            isPlayerTurn = !isPlayerTurn;
+        }
+
+        Console.WriteLine("Play again?");
+        Console.WriteLine("Y = Yes");
+        Console.WriteLine("N = No");
+        string choice = Console.ReadLine();
+        if (choice.ToUpper() == "Y")
+        {
+            game.ResetGame();
+            AIGame(player);
+        }
     }
 }
